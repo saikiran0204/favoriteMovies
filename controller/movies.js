@@ -1,4 +1,5 @@
-const moviesMOdel = require("../models/movies");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const _ = require("lodash")
 
 class Movies {
@@ -8,7 +9,7 @@ class Movies {
 
     async getAll(req, res) {
         try {
-            let movies = await moviesMOdel.findAll({ where: { username: req.user.username } });
+            let movies = await prisma.movies.findMany({ where: { username: req.user.username } });
             let myMovies = []
             for (let i = 0; i < movies.length; i++) {
                 myMovies.push(_.cloneDeep(movies[i]));
@@ -24,7 +25,7 @@ class Movies {
 
     async add(req, res) {
         try {
-            await moviesMOdel.create({ username: req.user.username, movieName: req.body.movieName, rating: req.body.rating, cast: req.body.cast.split(","), genre: req.body.genre, releaseDate: Date.parse(req.body.releaseDate) });
+            await prisma.movies.create({ data: { username: req.user.username, movieName: req.body.movieName, rating: parseInt(req.body.rating), cast: req.body.cast.split(","), genre: req.body.genre, releaseDate: Date.parse(req.body.releaseDate) } });
             return res.redirect("/dashboard");
         } catch (err) {
             console.log(err)
@@ -33,9 +34,9 @@ class Movies {
 
     async edit(req, res) {
         try {
-            let movie = await moviesMOdel.findOne({where: {username: req.user.username, id: req.query.id}});
-            movie.dataValues.cast = movie.dataValues.cast.join(", ");
-            return res.render("editMovie.ejs", { movie: movie});
+            let movie = await prisma.movies.findFirst({ where: { username: req.user.username, id: parseInt(req.query.id) } });
+            movie.cast = movie.cast.join(", ");
+            return res.render("editMovie.ejs", { movie: movie });
         } catch (err) {
             console.log(err)
         }
@@ -44,7 +45,7 @@ class Movies {
 
     async editApi(req, res) {
         try {
-            await moviesMOdel.update({ movieName: req.body.movieName, rating: req.body.rating, cast: req.body.cast.split(","), genre: req.body.genre, releaseDate: Date.parse(req.body.releaseDate) }, { where: { username: req.user.username, id: req.body.id } });
+            await prisma.movies.update({ data: { movieName: req.body.movieName, rating: parseInt(req.body.rating), cast: req.body.cast.split(","), genre: req.body.genre, releaseDate: Date.parse(req.body.releaseDate) }, where: { id: parseInt(req.body.id) } });
             return res.redirect("/dashboard");
         } catch (err) {
             console.log(err)
@@ -54,7 +55,7 @@ class Movies {
 
     async delete(req, res) {
         try {
-            await moviesMOdel.destroy({ where: { username: req.user.username, id: req.body.id } });
+            await prisma.movies.delete({ where: {  id: parseInt(req.body.id) } });
             return res.redirect("/dashboard");
         } catch (err) {
             console.log(err)

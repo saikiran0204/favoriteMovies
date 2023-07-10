@@ -12,10 +12,10 @@ class Login {
     async login(req, res) {
         try {
             if (!(_.isEmpty(req.body.username) || _.isEmpty(req.body.password))) {
-                let myUser = await user.findOne({where: {username: req.body.username, password: req.body.password,}});
+                let myUser = await prisma.user.findFirst({where: {username: req.body.username, password: req.body.password,}});
                 if (!_.isEmpty(myUser)) {
 
-                    res.cookie("authorization", authentication.create(myUser.dataValues));
+                    res.cookie("authorization", authentication.create(myUser));
                     return res.redirect("/dashboard");
                 }
 
@@ -30,11 +30,13 @@ class Login {
     async register(req, res) {
         try {
         if (!(_.isEmpty(req.body.username) || _.isEmpty(req.body.password))) {
-            let myUser = await user.findOne({where: {username: req.body.username}});
+            let myUser = await prisma.user.findFirst({where: {username: req.body.username}});
                 if (!_.isEmpty(myUser)) {
                     return res.render("register", { message: "Username already present" });
                 }
-                await user.create({username: req.body.username, password: req.body.password});
+
+                res.cookie("authorization", authentication.create(myUser));
+                await prisma.user.create({data:{username: req.body.username, password: req.body.password}});
                 return res.redirect("/dashboard");
             }
             return res.render("login", { message: "Username or password is empty" });
