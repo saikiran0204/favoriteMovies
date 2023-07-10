@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <center>
+        <form action="/editMovie" method="post">
+
+            <div class="container">
+                <label for="movieName"><b>Movie Name</b></label>
+                <input type="text" placeholder="Enter Movie Name" name="movieName" required value=<%= movie.movieName %>>
+                <br />
+
+                <label for="rating"><b>Rating</b></label>
+                <input type="number" id="rating" name="rating" min="1" max="5" required value=<%= movie.rating %>>
+                <br />
+
+                <label for="cast"><b>Cast seperate each by comma</b></label>
+                <input type="text" id="cast" name="cast" required value=<%= movie.cast %>>
+                <br />
+
+                <label for="genre"><b>Genre</b></label>
+                <input type="text" id="genre" name="genre" required value=<%= movie.genre %>>
+                <br />
+
+                <label for="releaseDate"><b>Release Date</b></label>
+                <input type="date" id="releaseDate" name="releaseDate" required>
+                <br />
+                <input type="hidden" id="id" name="id" value=<%= movie.id %>>
+
+                <button type="submit">Update Movie</button>
+            </div>
+
+        </form>
+
+
+        <form action="/dashboard" method="get">
+
+            <button type="submit">Cancel</button>
+        </form>
+
+    </center>
+</body>
+
+</html>

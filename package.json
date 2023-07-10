@@ -1,0 +1,27 @@
+{
+  "name": "favourite_movies",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "s"
+  },
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "8.5.1",
+    "lodash": "^4.17.21",
+    "prisma": "^4.16.2",
+    "sequelize": "^6.32.1"
+  }
+}

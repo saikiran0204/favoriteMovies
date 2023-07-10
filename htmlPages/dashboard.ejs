@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+              padding: 5px;
+            }
+            </style>
+    </head>
+    <body>
+        <center>
+        <form action="/addMovie" method="get"><button>Add Movie</button></form>
+<form action="/logout" method="post"><button>Logout</button></form>
+       <h2>Favorite Movies</h2>
+        <table>
+            <tr>
+              <th>S.No</th>
+              <th>Movie Name</th>
+              <th>Rating</th>
+              <th>Cast</th>
+              <th>Genre</th>
+              <th>Release Date</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+
+            <% for(var i=0; i< movies.length; i++) {%>
+
+                <tr>
+                    <td><%= movies[i].sno %></td>
+                    <td><%= movies[i].movieName %></td>
+                    <td><%= movies[i].rating %></td>
+                    <td><%= movies[i].cast %></td>
+                    <td><%= movies[i].genre %></td>
+                    <td><%= movies[i].releaseDate %></td>
+
+                    <td><form action="/editMovie" method="get"><input type="hidden" id="id" name="id" value=<%= movies[i].id %>><button>Edit</button></form></td>
+                    <td><form action="/delete" method="post"><input type="hidden" id="id" name="id" value=<%= movies[i].id %>><button>Delete</button></form></td>
+                </tr>
+            <% } %>
+            <tr>
+              
+            </tr>
+          </table>
+
+        <div>
+        </center>
+    </body>
+</html>
